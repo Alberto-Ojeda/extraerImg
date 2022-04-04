@@ -1,1 +1,2 @@
 # extraerImg
+# separadorEtiquetas
