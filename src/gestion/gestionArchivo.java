@@ -9,6 +9,8 @@ import Modelo.modeloEtiquetas;
 /**
  *
  * @author alberto
+ * se declara nuestro main en donde se llamara a las clases que se crearon con 
+ * anterioridad
  */
 public class gestionArchivo {
      public static void main(String[] args) {

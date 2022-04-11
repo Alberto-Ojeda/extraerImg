@@ -25,9 +25,13 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfAnnotation;
+import com.itextpdf.text.pdf.PdfArray;
 import com.itextpdf.text.pdf.PdfChunk;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfDictionary;
 import com.itextpdf.text.pdf.PdfEFStream;
+import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfNumber;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -72,6 +76,7 @@ public class controladorEtiquetas implements ActionListener {
                 modeloE.addCheckBox(archivo, vistaI.tablapdf);
                 ModificarStamper(archivo);
                 ModificarStamper2(archivo);
+                tamaño(archivo);
                 //              ModificarPdfbox(archivo);
             } else {
                 JOptionPane.showMessageDialog(null, "agregue la extencion .pdf" + "\n  ejemplo nombre.pdf ");
@@ -82,25 +87,27 @@ public class controladorEtiquetas implements ActionListener {
 
     public void ModificarStamper(File archivo) throws IOException, DocumentException {
         File archivo3 = null;
-        System.out.println(archivo.getPath());
         String ruta = archivo.getAbsolutePath();
         PdfReader reader = new PdfReader(ruta);
+        System.out.println(        reader.getPageSize(2).toString());
         int width = 131;
         int height = 131;
         Rectangle rec = new Rectangle(width, height);
         if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
             archivo2 = selecArchivo.getSelectedFile();
         }
-
+        
         PdfStamper stamper = new PdfStamper(reader,
                 new FileOutputStream(archivo2)); // output PDF
+
         BaseFont bf = BaseFont.createFont(
                 BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED); // set font
         for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+            
+        
 
             PdfContentByte over = stamper.getOverContent(i);
             over.rectangle(rec);
-            over.endText();
             over.rectangle(rec);
             // write text
             /*           over.beginText();
@@ -120,13 +127,91 @@ public class controladorEtiquetas implements ActionListener {
 
             over.stroke();
         }
-
+        
         stamper.close();
 
     }
+    
+    public void tamaño(File archivo) throws IOException, DocumentException{
+//        int width = 841;
+//        int height = 595;
+//        Rectangle rec = new Rectangle(width, height);
+ 
+        PdfReader reader = new PdfReader(archivo.getAbsolutePath());
+     if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            archivo2 = selecArchivo.getSelectedFile();
+        }
+PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(archivo2));
+ //stamper.insertPage(2, rec);
+int n = reader.getNumberOfPages();
+PdfDictionary page;
+PdfArray crop;
+PdfArray media;
+for (int p = 1; p <= n; p++) {
+  page = reader.getPageN(p);
+  media = page.getAsArray(PdfName.CROPBOX);
+  if (media == null) {
+    media = page.getAsArray(PdfName.MEDIABOX);
+  }
+  crop = new PdfArray();
+  crop.add(new PdfNumber(0));
+  crop.add(new PdfNumber(0));
+  crop.add(new PdfNumber(media.getAsNumber(2).floatValue() / 2));
+  crop.add(new PdfNumber(media.getAsNumber(3).floatValue() / 3));
+  page.put(PdfName.MEDIABOX, crop);
+  page.put(PdfName.CROPBOX, crop);
+ 
+  stamper.getUnderContent(p).setLiteral("\nq 0.55 0 0 0.55 5 -100 cm\nq");
+
+
+}
+stamper.close();
+       System.out.println(        reader.getPageSize(2).toString());
+reader.close();
+       System.out.println(        reader.getPageSize(2).toString());
+    } 
+    public void tamaño2(File archivo) throws IOException, DocumentException{
+//        int width = 841;
+//        int height = 595;
+//        Rectangle rec = new Rectangle(width, height);
+ 
+        PdfReader reader = new PdfReader(archivo.getAbsolutePath());
+     if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            archivo2 = selecArchivo.getSelectedFile();
+        }
+PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(archivo2));
+ //stamper.insertPage(2, rec);
+int n = reader.getNumberOfPages();
+PdfDictionary page;
+PdfArray crop;
+PdfArray media;
+for (int p = 1; p <= n; p++) {
+  page = reader.getPageN(p);
+  media = page.getAsArray(PdfName.CROPBOX);
+  if (media == null) {
+    media = page.getAsArray(PdfName.MEDIABOX);
+  }
+  crop = new PdfArray();
+  crop.add(new PdfNumber(0));
+  crop.add(new PdfNumber(0));
+  crop.add(new PdfNumber(media.getAsNumber(2).floatValue() / 2));
+  crop.add(new PdfNumber(media.getAsNumber(3).floatValue() / 3));
+  page.put(PdfName.MEDIABOX, crop);
+  page.put(PdfName.CROPBOX, crop);
+  
+  stamper.getUnderContent(p).setLiteral("\nq 0.55 0 0 0.55 0 0 cm\nq\nq");
+
+  stamper.getOverContent(p).setLiteral("\nQ\nQ\n");
+}
+stamper.close();
+       System.out.println(        reader.getPageSize(2).toString());
+reader.close();
+       System.out.println(        reader.getPageSize(2).toString());
+    } 
+            
+            
     public void ModificarStamper2(File archivo) throws IOException, DocumentException {
         File archivo3 = null;
-        System.out.println(archivo.getPath());
         String ruta = archivo.getAbsolutePath();
         PdfReader reader = new PdfReader(ruta);
         int width = 131;

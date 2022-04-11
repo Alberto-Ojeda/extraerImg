@@ -17,12 +17,14 @@ import javax.swing.text.TableView;
 /**
  *
  * @author alberto
+ * En esta clase se define los elementos que contendra la tabla que son el 
+ * nombre del archivo junto con la dirección de este 
  */
 public class modeloEtiquetas {
     int indicecolumna=0;
     public void importarT(File archivo, JTable table){
         
-                
+//se anexa la respuesta junto con el tamaño de la tabla.                
         String respuesta="No se pudo realizar la importación.";
         DefaultTableModel modeloT = new DefaultTableModel();
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
