@@ -48,7 +48,6 @@ import org.apache.pdfbox.tools.PDFSplit;
  * @author alberto
  */
 public class controladorEtiquetas implements ActionListener {
-
     /* creacion del archivo que se utilizara en modo lectura para su modificacion y extracción de las etiquetas
     junto con las variables que estaran a nivel global*/
     JFileChooser selecArchivo = new JFileChooser();
@@ -140,9 +139,10 @@ public class controladorEtiquetas implements ActionListener {
 //        Rectangle rec = new Rectangle(width, height);
 
         PdfReader reader = new PdfReader(archivo.getAbsolutePath());
-        if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+        File archivo2 = new File("C:/PDF/rederOne.pdf");
+        /*        if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
             archivo2 = selecArchivo.getSelectedFile();
-        }
+        }*/
         
         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(archivo2));
         //stamper.insertPage(2, rec);
@@ -168,9 +168,7 @@ public class controladorEtiquetas implements ActionListener {
 
         }
         stamper.close();
-        System.out.println(reader.getPageSize(2).toString());
         reader.close();
-        System.out.println(reader.getPageSize(2).toString());
     }
 
     public void tamaño2(File archivo) throws IOException, DocumentException {
@@ -179,9 +177,10 @@ public class controladorEtiquetas implements ActionListener {
 //        Rectangle rec = new Rectangle(width, height);
 
         PdfReader reader = new PdfReader(archivo.getAbsolutePath());
-        if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+        File archivo2 = new File("C:/PDF/rederTwo.pdf");
+        /*if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
             archivo2 = selecArchivo.getSelectedFile();
-        }
+        }*/
         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(archivo2));
         //stamper.insertPage(2, rec);
         int n = reader.getNumberOfPages();
@@ -206,9 +205,8 @@ public class controladorEtiquetas implements ActionListener {
 
         }
         stamper.close();
-        System.out.println(reader.getPageSize(2).toString());
         reader.close();
-        System.out.println(reader.getPageSize(2).toString());
+
     }
 
     public void ModificarStamper2(File archivo) throws IOException, DocumentException {
@@ -266,12 +264,14 @@ public class controladorEtiquetas implements ActionListener {
     public void Agregar(File archivo) throws IOException, DocumentException {
         File main_file = null, to_be_inserted = null,dest = null;
         
-        if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+         main_file = new File("C:/PDF/rederOne.pdf");
+         to_be_inserted = new File("C:/PDF/rederTwo.pdf");
+     /*   if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
             main_file = selecArchivo.getSelectedFile();
-        }
+        }*/
             PdfReader reader = new PdfReader(main_file.getPath());
-        if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
-            to_be_inserted = selecArchivo.getSelectedFile();}
+    /*    if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            to_be_inserted = selecArchivo.getSelectedFile();}*/
             PdfReader reader2 = new PdfReader(to_be_inserted.getPath());
 // Create a stamper
         if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
@@ -286,7 +286,6 @@ public class controladorEtiquetas implements ActionListener {
             
             if (i>1) {
             impares=impares+2;
-            System.out.println(impares);
             PdfImportedPage page = stamper.getImportedPage(reader2, i);
             stamper.insertPage(impares+i, reader2.getPageSize(i));
             stamper.getUnderContent(impares+i).addTemplate(page, 0, 0);
