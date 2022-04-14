@@ -69,7 +69,6 @@ public class controladorEtiquetas implements ActionListener {
     public controladorEtiquetas(vista vistaI, modeloEtiquetas modeloE) {
         this.vistaI = vistaI;
         this.vistaI.importar.addActionListener(this);
-        this.vistaI.Imprimir.addActionListener(this);
     }
 
     public void AgregarFiltro() {
@@ -175,7 +174,7 @@ public class controladorEtiquetas implements ActionListener {
             page.put(PdfName.MEDIABOX, crop);
             page.put(PdfName.CROPBOX, crop);
 
-            stamper.getUnderContent(p).setLiteral("\nq 1 0 0 .88 -133 365 cm\nq");
+            stamper.getUnderContent(p).setLiteral("\nq .91 0 0 .75 -145 480 cm\nq");
 
         }
          for (int i = 1; i <= reader.getNumberOfPages(); i++) {
@@ -198,7 +197,7 @@ public class controladorEtiquetas implements ActionListener {
             over.setLineWidth(200f);
             over.setTextMatrix(200, 200);
 
-            over.rectangle(200, 600, 200, 200);
+            over.rectangle(200, 630, 200, 200);
 //            over.rectangle(200,200, 200, 200); //para conseguir el primer rectangulo estas son las medidas
 
             over.stroke();
@@ -239,7 +238,7 @@ public class controladorEtiquetas implements ActionListener {
             page.put(PdfName.MEDIABOX, crop);
             page.put(PdfName.CROPBOX, crop);
 
-            stamper.getUnderContent(p).setLiteral("\nq 1 0 0 .88 -133 60 cm\nq");
+            stamper.getUnderContent(p).setLiteral("\nq .91 0 0 .75 -145 230 cm\nq");
 
         }
         for (int i = 1; i <= reader.getNumberOfPages(); i++) {
@@ -447,18 +446,7 @@ public class controladorEtiquetas implements ActionListener {
             }
 
         }
-        if (e.getSource()==vistaI.Imprimir) {
-            try {
-                imprimir();
-            } catch (IOException ex) {
-                Logger.getLogger(controladorEtiquetas.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (DocumentException ex) {
-                Logger.getLogger(controladorEtiquetas.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (PrinterException ex) {
-                Logger.getLogger(controladorEtiquetas.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
+
 
     }
 
