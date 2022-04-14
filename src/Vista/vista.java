@@ -32,6 +32,7 @@ public class vista extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        Imprimir = new javax.swing.JButton();
         importar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablapdf = new javax.swing.JTable();
@@ -44,6 +45,13 @@ public class vista extends javax.swing.JFrame {
         jPanel1.setToolTipText("");
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cinlat.png"))); // NOI18N
+
+        Imprimir.setText("jButton1");
+        Imprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ImprimirActionPerformed(evt);
+            }
+        });
 
         importar.setText("Abrir Archivo");
         importar.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +85,8 @@ public class vista extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jLabel1)
+                        .addGap(52, 52, 52)
+                        .addComponent(Imprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(importar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(74, Short.MAX_VALUE))
@@ -86,8 +96,10 @@ public class vista extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(17, Short.MAX_VALUE)
-                        .addComponent(importar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(16, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(importar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Imprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(79, 79, 79))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -97,7 +109,7 @@ public class vista extends javax.swing.JFrame {
                 .addGap(148, 148, 148))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 590));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 800, 590));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -107,6 +119,9 @@ public class vista extends javax.swing.JFrame {
 
                // TODO add your handling code here:
     }//GEN-LAST:event_importarActionPerformed
+
+    private void ImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImprimirActionPerformed
+    }//GEN-LAST:event_ImprimirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,6 +159,7 @@ public class vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton Imprimir;
     public javax.swing.JButton importar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
