@@ -54,6 +54,7 @@ import org.apache.pdfbox.tools.PDFSplit;
  *
  * @author alberto
  */
+
 public class controladorEtiquetas implements ActionListener {
 
     /* creacion del archivo que se utilizara en modo lectura para su modificacion y extracción de las etiquetas
@@ -69,6 +70,7 @@ public class controladorEtiquetas implements ActionListener {
     public controladorEtiquetas(vista vistaI, modeloEtiquetas modeloE) {
         this.vistaI = vistaI;
         this.vistaI.importar.addActionListener(this);
+        this.vistaI.mercado2.addActionListener(this);
     }
 
     public void AgregarFiltro() {
@@ -88,6 +90,25 @@ public class controladorEtiquetas implements ActionListener {
                 tamaño(archivo);
                 tamaño2(archivo);
                 Agregar(archivo);
+                //              ModificarPdfbox(archivo);
+            } else {
+                JOptionPane.showMessageDialog(null, "agregue la extencion .pdf" + "\n  ejemplo nombre.pdf ");
+            }
+        }
+
+    }
+    public void importar2() throws IOException, DocumentException, PrinterException {
+        if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            archivo = selecArchivo.getSelectedFile();
+            if (archivo.getName().endsWith("pdf")) {
+                JOptionPane.showMessageDialog(null, "importación exitosa" + "\n Formato" + archivo.getName().substring(archivo.getName().indexOf(".")));
+                modeloE.importarT(archivo, vistaI.tablapdf);
+                modeloE.addCheckBox(archivo, vistaI.tablapdf);
+                //            ModificarStamper(archivo);
+                /* ModificarStamper2(archivo);*/
+                tamaño3(archivo);
+                tamaño4(archivo);
+                Agregar2(archivo);
                 //              ModificarPdfbox(archivo);
             } else {
                 JOptionPane.showMessageDialog(null, "agregue la extencion .pdf" + "\n  ejemplo nombre.pdf ");
@@ -415,7 +436,7 @@ public class controladorEtiquetas implements ActionListener {
         pdfDocument.close();
 
     }*/
-    
+   /* 
     public void imprimir()throws IOException, DocumentException, PrinterException{
       if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
             archivo = selecArchivo.getSelectedFile();}
@@ -427,7 +448,204 @@ public class controladorEtiquetas implements ActionListener {
             job.setPageable(new PDFPageable(impresion));
             job.print();
         }
+    }*/
+    
+    public void tamaño3(File archivo) throws IOException, DocumentException {
+//        int width = 841;
+//        int height = 595;
+//        Rectangle rec = new Rectangle(width, height);
+        int width = 131;
+        int height = 131;
+        Rectangle rec = new Rectangle(width, height);
+        PdfReader reader = new PdfReader(archivo.getAbsolutePath());
+        File archivo2 = new File("C:/PDF/rederOne.pdf");
+        /*        if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            archivo2 = selecArchivo.getSelectedFile();
+        }*/
+
+        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(archivo2));
+        //stamper.insertPage(2, rec);
+        int n = reader.getNumberOfPages();
+        PdfDictionary page;
+        PdfArray crop;
+        PdfArray media;
+        for (int p = 1; p <= n; p++) {
+            page = reader.getPageN(p);
+            media = page.getAsArray(PdfName.CROPBOX);
+            if (media == null) {
+                media = page.getAsArray(PdfName.MEDIABOX);
+            }
+            crop = new PdfArray();
+            crop.add(new PdfNumber(0));
+            crop.add(new PdfNumber(0));
+            crop.add(new PdfNumber(media.getAsNumber(2).floatValue() / 1));
+            crop.add(new PdfNumber(media.getAsNumber(3).floatValue() / 1));
+            page.put(PdfName.MEDIABOX, crop);
+            page.put(PdfName.CROPBOX, crop);
+
+            stamper.getUnderContent(p).setLiteral("\nq .75 0 0 .75 -75 525 cm\nq");
+
+        }
+         for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+
+            // get object for writing over the existing content;
+            // you can also use getUnderContent for writing in the bottom layer
+            PdfContentByte over = stamper.getOverContent(i);
+             over.rectangle(rec);
+            over.rectangle(rec);
+            // write text
+            /*           over.beginText();
+            over.setFontAndSize(bf, 10);    // set font and size
+            over.setTextMatrix(107, 740);   // set x,y position (0,0 is at the bottom left)
+            over.showText("I can write at page " + i);  // set text
+            over.endText();
+             */
+            // draw a red circle
+            over.setRGBColorStroke(0xFF, 0xFF, 0xFF);
+            over.lineTo(5, 5);
+            over.setLineWidth(300f);
+            over.setTextMatrix(300, 300);
+
+            over.rectangle(300, 630, 300, 300);
+//            over.rectangle(200,200, 200, 200); //para conseguir el primer rectangulo estas son las medidas
+
+            over.stroke();
+        }
+        stamper.close();
+        reader.close();
     }
+
+    public void tamaño4(File archivo) throws IOException, DocumentException {
+//        int width = 841;
+//        int height = 595;
+//        Rectangle rec = new Rectangle(width, height);
+        int width = 131;
+        int height = 131;
+        Rectangle rec = new Rectangle(width, height);
+        PdfReader reader = new PdfReader(archivo.getAbsolutePath());
+        File archivo2 = new File("C:/PDF/rederTwo.pdf");
+        /*if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            archivo2 = selecArchivo.getSelectedFile();
+        }*/
+        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(archivo2));
+        //stamper.insertPage(2, rec);
+        int n = reader.getNumberOfPages();
+        PdfDictionary page;
+        PdfArray crop;
+        PdfArray media;
+        for (int p = 1; p <= n; p++) {
+            page = reader.getPageN(p);
+            media = page.getAsArray(PdfName.CROPBOX);
+            if (media == null) {
+                media = page.getAsArray(PdfName.MEDIABOX);
+            }
+            crop = new PdfArray();
+            crop.add(new PdfNumber(0));
+            crop.add(new PdfNumber(0));
+            crop.add(new PdfNumber(media.getAsNumber(2).floatValue() / 1));
+            crop.add(new PdfNumber(media.getAsNumber(3).floatValue() / 1));
+            page.put(PdfName.MEDIABOX, crop);
+            page.put(PdfName.CROPBOX, crop);
+
+            stamper.getUnderContent(p).setLiteral("\nq .75 0 0 .75 -75 265 cm\nq");
+
+        }
+        for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+
+            PdfContentByte over = stamper.getOverContent(i);
+            over.rectangle(rec);
+            over.rectangle(rec);
+            // write text
+            /*           over.beginText();
+            over.setFontAndSize(bf, 10);    // escribir texto, modificar su tamaño y su posición 
+            over.setTextMatrix(107, 740);   // set x,y position (0,0 is at the bottom left)
+            over.showText("I can write at page " + i);  // set text
+            over.endText();
+             */
+            // draw a red circle
+            over.setRGBColorStroke(0xFF, 0xFF, 0xFF);
+            over.lineTo(5, 5);
+            over.setLineWidth(200f);
+            over.setTextMatrix(200, 200);
+
+            //          over.rectangle(200,600, 200, 200);
+            over.rectangle(200, 200, 215, 185); //para conseguir el primer rectangulo estas son las medidas
+
+            over.stroke();
+        }
+        stamper.close();
+        reader.close();
+
+    }    
+     public void Agregar2(File archivo) throws IOException, DocumentException, PrinterException {
+        File main_file = null, to_be_inserted = null, dest = null;
+
+        main_file = new File("C:/PDF/rederOne.pdf");
+        to_be_inserted = new File("C:/PDF/rederTwo.pdf");
+        /*   if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            main_file = selecArchivo.getSelectedFile();
+        }*/
+        PdfReader reader = new PdfReader(main_file.getPath());
+        /*    if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            to_be_inserted = selecArchivo.getSelectedFile();}*/
+        PdfReader reader2 = new PdfReader(to_be_inserted.getPath());
+// Create a stamper
+/*        if (selecArchivo.showDialog(null, "Crear") == JFileChooser.APPROVE_OPTION) {
+            dest = selecArchivo.getSelectedFile();
+        }*/
+        ByteArrayOutputStream archivotemp = new ByteArrayOutputStream();
+
+        PdfStamper stamper = new PdfStamper(reader, archivotemp);
+        int impares = 0;
+        int impares2 = 1;
+
+        for (int i = 1; i <= reader2.getNumberOfPages(); i++) {
+            // Create an imported page to be inserted
+            if (i % 2 != 0) {
+
+                if (i > 1) {
+                    impares = impares + 2;
+                    PdfImportedPage page = stamper.getImportedPage(reader2, i);
+                    stamper.insertPage(impares + i, reader2.getPageSize(i));
+                    stamper.getUnderContent(impares + i).addTemplate(page, 0, 0);
+                } else {
+                    PdfImportedPage page = stamper.getImportedPage(reader2, i);
+                    stamper.insertPage(i, reader2.getPageSize(i));
+                    stamper.getUnderContent(i).addTemplate(page, 0, 0);
+                }
+            } else {
+                if (i > 2) {
+                    impares2 = impares2 + 2;
+                    PdfImportedPage page = stamper.getImportedPage(reader2, i);
+                    stamper.insertPage(impares2 + i, reader2.getPageSize(i));
+                    stamper.getUnderContent(impares2 + i).addTemplate(page, 0, 0);
+
+                } else {
+                    PdfImportedPage page = stamper.getImportedPage(reader2, i);
+                    stamper.insertPage(i + 1, reader2.getPageSize(i));
+                    stamper.getUnderContent(i + 1).addTemplate(page, 0, 0);
+                }
+            }
+
+// Close the stamper and the readers
+        }
+        stamper.close();
+                        ByteArrayInputStream input = new ByteArrayInputStream(archivotemp.toByteArray());
+                    
+                    PDDocument documento12 = PDDocument.load(input);
+                    
+                    PrinterJob job = PrinterJob.getPrinterJob();
+                    if (job.printDialog() == true) {
+                        
+                        job.setPageable(new PDFPageable(documento12));
+                        job.print();
+                    }
+        reader.close();
+        reader2.close();
+    }
+     
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     
     public void actionPerformed(ActionEvent e) {
         contAccion++;
         if (contAccion == 1) {
@@ -438,6 +656,18 @@ public class controladorEtiquetas implements ActionListener {
             try {
                 importar();
             } catch (IOException ex) {
+                Logger.getLogger(controladorEtiquetas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DocumentException ex) {
+                Logger.getLogger(controladorEtiquetas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (PrinterException ex) {
+                Logger.getLogger(controladorEtiquetas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        if (e.getSource()== vistaI.mercado2) {
+            try {
+                importar2();
+           } catch (IOException ex) {
                 Logger.getLogger(controladorEtiquetas.class.getName()).log(Level.SEVERE, null, ex);
             } catch (DocumentException ex) {
                 Logger.getLogger(controladorEtiquetas.class.getName()).log(Level.SEVERE, null, ex);
